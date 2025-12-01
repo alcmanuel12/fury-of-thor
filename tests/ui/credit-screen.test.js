@@ -1,7 +1,12 @@
-/**
- * @jest-environment jsdom
- */
 import { jest } from "@jest/globals";
+
+global.window = {
+    _isMuted: false,
+    _currentSound: null,
+    _soundAlertShown: false,
+    _gameEnded: false,
+    _winnerName: null
+};
 
 jest.unstable_mockModule("../../src/core/state.js", () => ({
     state: {
@@ -31,7 +36,6 @@ jest.unstable_mockModule("../../src/core/persistence.js", () => ({
         save: jest.fn()
     }
 }));
-
 
 const { initCreditScreen } = await import("../../src/ui/screens/credit-screen.js");
 const { state } = await import("../../src/core/state.js");

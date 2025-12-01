@@ -1,8 +1,12 @@
-/**
- * @jest-environment jsdom
- */
 import { jest } from "@jest/globals";
 
+global.window = {
+    _isMuted: false,
+    _currentSound: null,
+    _soundAlertShown: false,
+    _gameEnded: false,
+    _winnerName: null
+};
 
 jest.unstable_mockModule("../../src/core/sound-manager.js", () => ({
     soundManager: {
@@ -16,7 +20,6 @@ jest.unstable_mockModule("../../src/core/persistence.js", () => ({
         save: jest.fn()
     }
 }));
-
 
 const { soundManager } = await import("../../src/core/sound-manager.js");
 const { persistence } = await import("../../src/core/persistence.js");
@@ -86,14 +89,12 @@ describe("Home Screen UI", () => {
         const infoBtn = document.getElementById("info-button");
         const content = document.querySelector(".info-content");
 
-        infoBtn.click(); 
+        infoBtn.click();
         expect(popup.classList.contains("hidden")).toBe(false);
 
-        
         content.click();
         expect(popup.classList.contains("hidden")).toBe(false);
 
-        
         popup.click();
         expect(popup.classList.contains("hidden")).toBe(true);
     });

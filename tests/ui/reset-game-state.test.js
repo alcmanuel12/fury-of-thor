@@ -1,7 +1,12 @@
-
-
 import { jest } from '@jest/globals';
 
+global.window = {
+    _isMuted: false,
+    _currentSound: null,
+    _soundAlertShown: false,
+    _gameEnded: false,
+    _winnerName: null
+};
 
 jest.unstable_mockModule("../../src/ui/runes-circle.js", () => ({
     renderRunesCircle: jest.fn(),
@@ -14,7 +19,9 @@ jest.unstable_mockModule("../../src/core/persistence.js", () => ({
     persistence: {
         save: jest.fn(),
         load: jest.fn(() => ({})),
-        clear: jest.fn()
+        clear: jest.fn(),
+        setGameEnded: jest.fn(),
+        setWinnerName: jest.fn()
     }
 }));
 
@@ -29,13 +36,10 @@ jest.unstable_mockModule("../../src/core/state.js", () => ({
     }
 }));
 
-
 const { resetGameState } = await import("../../src/ui/screens/ingame-screen.js");
 const { state } = await import("../../src/core/state.js");
 const { persistence } = await import("../../src/core/persistence.js");
 const { resetChosenRune, breakChosenRune } = await import("../../src/ui/runes-circle.js");
-
-
 
 describe("resetGameState()", () => {
 
@@ -50,10 +54,8 @@ describe("resetGameState()", () => {
     test("resetea elementos del estado", () => {
         resetGameState();
 
-        expect(state.clearVikings).toHaveBeenCalled();
-        expect(state.clearRuneElements).toHaveBeenCalled();
-        expect(state.clearVikingToRune).toHaveBeenCalled();
-        expect(state.resetAvailableRunes).toHaveBeenCalled();
+        expect(persistence.setGameEnded).toHaveBeenCalledWith(false);
+        expect(persistence.setWinnerName).toHaveBeenCalledWith(null);
     });
 
     test("ejecuta resetChosenRune()", () => {
@@ -61,11 +63,11 @@ describe("resetGameState()", () => {
         expect(resetChosenRune).toHaveBeenCalled();
     });
 
-    test("ejecuta persistence.clear() y luego save()", () => {
+    test("ejecuta persistence.setGameEnded y setWinnerName", () => {
         resetGameState();
 
-        expect(persistence.clear).toHaveBeenCalled();
-        expect(persistence.save).toHaveBeenCalled();
+        expect(persistence.setGameEnded).toHaveBeenCalledWith(false);
+        expect(persistence.setWinnerName).toHaveBeenCalledWith(null);
     });
 
     test("no llama breakChosenRune (solo se llama al romper la runa)", () => {

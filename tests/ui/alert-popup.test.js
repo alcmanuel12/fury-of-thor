@@ -1,9 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-
 import { jest } from "@jest/globals";
-
 
 async function flush() {
     await Promise.resolve();
@@ -13,10 +8,8 @@ async function flush() {
 let alertPopup;
 
 beforeEach(async () => {
-    
     jest.resetModules();
 
-    
     document.body.innerHTML = `
         <div id="alert-popup" class="hidden">
             <div class="alert-message"></div>
@@ -25,30 +18,23 @@ beforeEach(async () => {
         </div>
     `;
 
-    
     const module = await import("../../src/ui/alert-popup.js");
     alertPopup = module.alertPopup;
 });
-
-
-
 
 test("confirm() muestra botón cancelar y devuelve false si se pulsa cancelar", async () => {
     const cancelBtn = document.getElementById("alert-cancel-btn");
 
     const promise = alertPopup.confirm("¿Seguro?");
-    await flush(); 
+    await flush();
 
-    
     expect(cancelBtn.classList.contains("hidden")).toBe(false);
 
-    cancelBtn.click(); 
+    cancelBtn.click();
     const result = await promise;
 
     expect(result).toBe(false);
 });
-
-
 
 test("show() admite contenido HTML cuando isHTML = true", async () => {
     const messageEl = document.querySelector(".alert-message");
@@ -58,8 +44,6 @@ test("show() admite contenido HTML cuando isHTML = true", async () => {
 
     expect(messageEl.innerHTML).toBe("<b>HTML</b>");
 });
-
-
 
 test("show() asigna textos de botones correctamente", async () => {
     const acceptBtn = document.getElementById("alert-accept-btn");
