@@ -8,7 +8,6 @@ class AlertPopup {
     }
 
     init() {
-        // Solo inicializa una vez
         if (this.popup) return;
 
         this.popup = document.getElementById('alert-popup');

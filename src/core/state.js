@@ -1,7 +1,6 @@
 import { runes } from './runes.js';
 import { persistence } from './persistence.js';
 
-
 let vikings = [];
 let availableRunes = [...runes];
 let runeElements = [];
