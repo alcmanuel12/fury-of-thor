@@ -142,10 +142,10 @@ This structure ensures maintainability, readability, and scalability.
 # <div align="center">📱 Mobile UX Overview</div>
 
 <div align="center">
-<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/cd157979-fe39-4525-84e3-4338cccca1af" />
-<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/93dc84aa-3953-438c-a8d7-782792537a93" />
-<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/f08512a6-8dda-414a-a160-7e4ded4eab18" />
-<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/bcef8510-a39f-4d30-b0dc-cac280894d80" />
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/2e85faac-a60a-41ef-a36d-3bc784f7f552" />
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/f4507ab2-7ab3-40fb-a320-c7551860dad5" />
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/4dbaff42-d29f-4967-b39a-2d17d9ca893d" />
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/c2166793-1750-48a9-85be-cad3234c5778" />
 <img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/2ccb8282-8780-4a17-ba54-03be8f863009"/>
 <img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/3325fd47-7d4c-4e80-a58b-3711ac85fa3a"/>
 <img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/31bdd8fc-f057-4649-b94c-2b3bafb5feb9"/>
