@@ -49,25 +49,42 @@ All wrapped in a humorous but elegant Norse theme.
 ### 🏕️ Home Screen
 
 <div align="center">
-<img width="2856" height="1640" alt="image" src="https://github.com/user-attachments/assets/273bab27-5dca-4f6a-ac99-1b7e28885401" />
+<img width="2856" height="1640" alt="image" src="https://github.com/user-attachments/assets/90f2847c-02bc-470f-a330-2ca627a3e6c0" />
 </div>
 
-### 🛡️ Viking Selection
+### 🛡️ Add Vikings
 
 <div align="center">
-<img width="2856" height="1652" alt="image" src="https://github.com/user-attachments/assets/e17756fa-86ba-4f90-954a-9f06ba57d8ad" />
+<img width="2856" height="1652" alt="image" src="https://github.com/user-attachments/assets/70288eb8-816e-4f6d-979b-ca1c8ea3e84a" />
 </div>
+
+### 🎮 Reglas del Juego
+
+<div align="center">
+<img width="2856" height="1652" alt="image" src="https://github.com/user-attachments/assets/caac2f58-c471-4a88-bb00-b204b6002044" />
+</div>
+
 
 ### 🔥 Ritual Circle
 
 <div align="center">
-<img width="2856" height="1666" alt="image" src="https://github.com/user-attachments/assets/d8079b20-4fba-4697-8a70-2d82872a3270" />
+<img width="2856" height="1666" alt="image" src="https://github.com/user-attachments/assets/5029c408-1a92-4bec-a8c7-49cd8121ac9d" />
 </div>
 
 ### ⚡ Sacrifice Sequence
 
+https://github.com/user-attachments/assets/44c95404-b5b3-4534-aa0d-02659a3a7c55
+
+### 🏆 Winner Chosen
+
 <div align="center">
-<img width="2856" height="1660" alt="image" src="https://github.com/user-attachments/assets/ab3e0cba-d2c4-447f-acc8-cb0bb5e5441d" />
+<img width="2856" height="1660" alt="image" src="https://github.com/user-attachments/assets/01f1ef46-96f9-4fd6-8796-919ef18cf694" />
+</div>
+
+### 🎬 Credits
+
+<div align="center">
+<img width="2856" height="1660" alt="image" src="https://github.com/user-attachments/assets/bf2e347d-2db0-475c-bb48-dddae25772fd" />
 </div>
 
 # <div align="center">🌩️ **Core Features**</div>
@@ -129,6 +146,9 @@ This structure ensures maintainability, readability, and scalability.
 <img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/93dc84aa-3953-438c-a8d7-782792537a93" />
 <img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/f08512a6-8dda-414a-a160-7e4ded4eab18" />
 <img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/bcef8510-a39f-4d30-b0dc-cac280894d80" />
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/2ccb8282-8780-4a17-ba54-03be8f863009"/>
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/3325fd47-7d4c-4e80-a58b-3711ac85fa3a"/>
+<img width="240" height="1434" alt="image" src="https://github.com/user-attachments/assets/31bdd8fc-f057-4649-b94c-2b3bafb5feb9"/>
 
 </div>
 
