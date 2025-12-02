@@ -14,13 +14,16 @@ global.window = {
     _winnerName: null
 };
 
+const mockIsRestoring = jest.fn(() => false);
+const mockPersistence = {
+    isRestoring: mockIsRestoring,
+    save: mockSave,
+    load: () => {},
+    getCurrentScreen: () => null
+};
+
 jest.unstable_mockModule("../../src/core/persistence.js", () => ({
-    persistence: {
-        isRestoring: () => false,
-        save: mockSave,
-        load: () => {},
-        getCurrentScreen: () => null
-    }
+    persistence: mockPersistence
 }));
 
 const { state } = await import("../../src/core/state.js");
@@ -193,8 +196,17 @@ describe("state object", () => {
     describe("State persistence", () => {
         test("state operations trigger save when not restoring", () => {
             jest.clearAllMocks();
+            mockIsRestoring.mockReturnValue(false);
             state.setVikings(["Ragnar"]);
             expect(mockSave).toHaveBeenCalled();
+        });
+
+        test("state operations do not trigger save when restoring", () => {
+            jest.clearAllMocks();
+            mockIsRestoring.mockReturnValue(true);
+            state.setVikings(["Ragnar"]);
+            expect(mockSave).not.toHaveBeenCalled();
+            mockIsRestoring.mockReturnValue(false);
         });
     });
 });

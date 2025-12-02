@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,57 +97,57 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { state } from '../core/state.js';
 import { runes } from '../core/runes.js';
 import { persistence } from '../core/persistence.js';
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >renderVikingsList(</span>) {
-    const list = <span class="cstat-no" title="statement not covered" >document.getElementById('vikingsList');</span>
-<span class="cstat-no" title="statement not covered" >    if (!list) <span class="cstat-no" title="statement not covered" >return;</span></span>
+export function renderVikingsList() {
+    const list = document.getElementById('vikingsList');
+    if (!list) return;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    state.resetAvailableRunes();</span>
-<span class="cstat-no" title="statement not covered" >    list.innerHTML = '';</span>
+    state.resetAvailableRunes();
+    list.innerHTML = '';
 &nbsp;
-    const vikings = <span class="cstat-no" title="statement not covered" >state.getVikings();</span>
-    const availableRunes = <span class="cstat-no" title="statement not covered" >state.getAvailableRunes();</span>
+    const vikings = state.getVikings();
+    const availableRunes = state.getAvailableRunes();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    vikings.forEach(<span class="fstat-no" title="function not covered" >na</span>me =&gt; {</span>
-        const div = <span class="cstat-no" title="statement not covered" >document.createElement('div');</span>
-<span class="cstat-no" title="statement not covered" >        div.classList.add('viking-item');</span>
+    vikings.forEach(name =&gt; {
+        const div = document.createElement('div');
+        div.classList.add('viking-item');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (availableRunes.length &gt; 0) {</span>
-            const randomIndex = <span class="cstat-no" title="statement not covered" >Math.floor(Math.random() * availableRunes.length);</span>
-            const chosenRune = <span class="cstat-no" title="statement not covered" >state.removeRune(randomIndex);</span>
-<span class="cstat-no" title="statement not covered" >            div.innerHTML = `&lt;img src="${chosenRune.url}" alt="runa-${chosenRune.id}"&gt;&lt;span&gt;${name}&lt;/span&gt;`;</span>
-<span class="cstat-no" title="statement not covered" >            list.appendChild(div);</span>
+        if (availableRunes.length &gt; 0) {
+            const randomIndex = Math.floor(Math.random() * availableRunes.length);
+            const chosenRune = state.removeRune(randomIndex);
+            div.innerHTML = `&lt;img src="${chosenRune.url}" alt="runa-${chosenRune.id}"&gt;&lt;span&gt;${name}&lt;/span&gt;`;
+            list.appendChild(div);
         }
     });
     
-<span class="cstat-no" title="statement not covered" >    persistence.save();</span>
+    persistence.save();
 }
 &nbsp;
 &nbsp;</pre></td></tr></table></pre>
@@ -157,7 +157,7 @@ export function <span class="fstat-no" title="function not covered" >renderVikin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-02T08:12:36.004Z
+                at 2025-12-02T16:36:34.958Z
             </div>
         <script src="../prettify.js"></script>
         <script>

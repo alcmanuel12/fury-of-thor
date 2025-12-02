@@ -268,4 +268,12 @@ describe("soundManager", () => {
             expect(soundManager.soundTypes).toEqual({});
         });
     });
+
+    describe("saveState()", () => {
+        test("saveState() dynamically imports persistence and calls save", async () => {
+            jest.clearAllMocks();
+            await soundManager.saveState();
+            expect(mockSave).toHaveBeenCalled();
+        });
+    });
 });

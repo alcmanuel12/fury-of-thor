@@ -77,4 +77,17 @@ describe("credit-screen UI", () => {
         expect(persistence.clear).toHaveBeenCalled();
         expect(persistence.save).toHaveBeenCalled();
     });
+
+    test("handleHomeClick returns early when screens are missing", () => {
+        document.body.innerHTML = `
+            <button id="credit-home-button"></button>
+        `;
+        
+        initCreditScreen();
+        
+        const btn = document.getElementById("credit-home-button");
+        btn.click();
+        
+        expect(state.clearVikings).toHaveBeenCalled();
+    });
 });

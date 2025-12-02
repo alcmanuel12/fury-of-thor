@@ -51,18 +51,26 @@ global.window = {
 };
 
 jest.unstable_mockModule("../../src/core/runes.js", () => ({
-    runes: [],
-    brokenRunes: []
+    runes: [
+        { id: 1, url: "rune1.png" },
+        { id: 2, url: "rune2.png" }
+    ],
+    brokenRunes: [
+        { id: 1, url: "broken1.png" },
+        { id: 2, url: "broken2.png" }
+    ]
 }));
 
+const mockState = {
+    getVikings: jest.fn(() => []),
+    getRuneElements: jest.fn(() => []),
+    getVikingToRune: jest.fn(() => ({})),
+    clearRuneElements: jest.fn(),
+    setRuneElements: jest.fn()
+};
+
 jest.unstable_mockModule("../../src/core/state.js", () => ({
-    state: {
-        getVikings: jest.fn(() => []),
-        getRuneElements: jest.fn(() => {
-            return [];
-        }),
-        getVikingToRune: jest.fn(() => ({}))
-    }
+    state: mockState
 }));
 
 const { persistence } = await import("../../src/core/persistence.js");
@@ -263,6 +271,284 @@ describe("persistence", () => {
         
         persistence.setWinnerName(null);
         expect(window._winnerName).toBe(null);
+    });
+
+    test("save() includes broken runes in allVikings", () => {
+        persistence.setIsRestoring(false);
+        
+        const brokenRuneElement = {
+            classList: { contains: jest.fn((cls) => cls === 'broken') },
+            dataset: { vikingName: "BrokenViking", runeId: "1" }
+        };
+        
+        mockState.getVikings.mockReturnValue(["ActiveViking"]);
+        mockState.getRuneElements.mockReturnValue([brokenRuneElement]);
+        mockState.getVikingToRune.mockReturnValue({});
+        
+        persistence.save();
+        
+        const callArgs = mockSetItem.mock.calls[0];
+        const savedState = JSON.parse(callArgs[1]);
+        expect(savedState.allVikings).toContain("BrokenViking");
+        expect(savedState.allVikings).toContain("ActiveViking");
+    });
+
+    test("save() processes runeElements to build fullVikingToRune", () => {
+        persistence.setIsRestoring(false);
+        
+        const runeElement = {
+            dataset: { vikingName: "TestViking", runeId: "1" },
+            classList: { contains: jest.fn(() => false) }
+        };
+        
+        mockState.getVikings.mockReturnValue(["TestViking"]);
+        mockState.getRuneElements.mockReturnValue([runeElement]);
+        mockState.getVikingToRune.mockReturnValue({});
+        
+        persistence.save();
+        
+        const callArgs = mockSetItem.mock.calls[0];
+        const savedState = JSON.parse(callArgs[1]);
+        expect(savedState.vikingToRune.TestViking).toEqual({ id: 1, url: "rune1.png" });
+    });
+
+    test("save() handles invalid runeId in runeElements", () => {
+        persistence.setIsRestoring(false);
+        
+        const runeElement = {
+            dataset: { vikingName: "TestViking", runeId: "invalid" },
+            classList: { contains: jest.fn(() => false) }
+        };
+        
+        mockState.getVikings.mockReturnValue([]);
+        mockState.getRuneElements.mockReturnValue([runeElement]);
+        mockState.getVikingToRune.mockReturnValue({});
+        
+        persistence.save();
+        
+        const callArgs = mockSetItem.mock.calls[0];
+        const savedState = JSON.parse(callArgs[1]);
+        expect(savedState.vikingToRune.TestViking).toBeUndefined();
+    });
+
+    test("save() handles error gracefully", () => {
+        persistence.setIsRestoring(false);
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        mockSetItem.mockImplementation(() => {
+            throw new Error("Storage error");
+        });
+        
+        expect(() => persistence.save()).not.toThrow();
+        expect(consoleSpy).toHaveBeenCalled();
+        
+        consoleSpy.mockRestore();
+        mockSetItem.mockImplementation(function(key, value) {
+            storageData[key] = value;
+        });
+    });
+
+    test("clear() handles error gracefully", () => {
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        mockRemoveItem.mockImplementation(() => {
+            throw new Error("Storage error");
+        });
+        
+        expect(() => persistence.clear()).not.toThrow();
+        expect(consoleSpy).toHaveBeenCalled();
+        
+        consoleSpy.mockRestore();
+        mockRemoveItem.mockImplementation(function(key) {
+            delete storageData[key];
+        });
+    });
+
+    test("getBrokenRunes() returns broken runes", () => {
+        const brokenRuneElement = {
+            classList: { contains: jest.fn((cls) => cls === 'broken') },
+            dataset: { vikingName: "BrokenViking", runeId: "1" }
+        };
+        
+        const normalRuneElement = {
+            classList: { contains: jest.fn(() => false) },
+            dataset: { vikingName: "NormalViking", runeId: "2" }
+        };
+        
+        mockState.getRuneElements.mockReturnValue([brokenRuneElement, normalRuneElement]);
+        
+        const broken = persistence.getBrokenRunes();
+        expect(broken).toHaveLength(1);
+        expect(broken[0]).toEqual({ vikingName: "BrokenViking", runeId: 1 });
+    });
+
+    test("getCurrentSound() returns null for invalid sound", () => {
+        window._currentSound = "invalid-sound";
+        expect(persistence.getCurrentSound()).toBe(null);
+    });
+
+    test("restoreScreen() shows correct screen and hides others", () => {
+        const screens = {};
+        ['home-screen', 'player-selection-screen', 'ingame-screen', 'credit-screen'].forEach(id => {
+            screens[id] = {
+                id: id,
+                style: { display: 'none' },
+                classList: { 
+                    remove: jest.fn(),
+                    contains: jest.fn(() => false)
+                }
+            };
+        });
+        
+        const originalGetElementById = document.getElementById;
+        document.getElementById = jest.fn((id) => screens[id]);
+        
+        persistence.restoreScreen('ingame-screen');
+        
+        expect(screens['ingame-screen'].style.display).toBe('flex');
+        expect(screens['ingame-screen'].classList.remove).toHaveBeenCalledWith('hidden');
+        expect(screens['home-screen'].style.display).toBe('none');
+        expect(screens['player-selection-screen'].style.display).toBe('none');
+        expect(screens['credit-screen'].style.display).toBe('none');
+        
+        document.getElementById = originalGetElementById;
+    });
+
+    test("restoreBrokenRunes() restores broken runes", async () => {
+        const { brokenRunes } = await import("../../src/core/runes.js");
+        
+        const runeElement = {
+            dataset: { vikingName: "TestViking", runeId: "1" },
+            style: {},
+            classList: { add: jest.fn() }
+        };
+        
+        mockState.getRuneElements.mockReturnValue([runeElement]);
+        
+        persistence.restoreBrokenRunes([{ vikingName: "TestViking", runeId: 1 }]);
+        
+        expect(runeElement.style.backgroundImage).toBe(`url(${brokenRunes[0].url})`);
+        expect(runeElement.classList.add).toHaveBeenCalledWith('broken');
+    });
+
+    test("restoreBrokenRunes() handles empty list", () => {
+        mockState.getRuneElements.mockReturnValue([]);
+        expect(() => persistence.restoreBrokenRunes([])).not.toThrow();
+    });
+
+    test("restoreBrokenRunes() handles missing rune element", () => {
+        mockState.getRuneElements.mockReturnValue([]);
+        expect(() => persistence.restoreBrokenRunes([{ vikingName: "Missing", runeId: 1 }])).not.toThrow();
+    });
+
+    test("restoreAllRunes() creates runes circle", () => {
+        const container = document.createElement('div');
+        container.id = 'runesCircleContainer';
+        container.classList.add = jest.fn();
+        container.classList.remove = jest.fn();
+        container.innerHTML = '';
+        document.body.appendChild(container);
+        
+        mockDocument.getElementById.mockImplementation((id) => {
+            if (id === 'runesCircleContainer') return container;
+            return null;
+        });
+        
+        const allVikings = ["Viking1", "Viking2"];
+        const vikingToRune = {
+            "Viking1": { id: 1, url: "rune1.png" },
+            "Viking2": { id: 2, url: "rune2.png" }
+        };
+        
+        // Mock window dimensions
+        Object.defineProperty(window, 'innerHeight', { value: 1000, writable: true });
+        Object.defineProperty(window, 'innerWidth', { value: 1000, writable: true });
+        
+        persistence.restoreAllRunes(allVikings, vikingToRune, []);
+        
+        expect(mockState.clearRuneElements).toHaveBeenCalled();
+        expect(mockState.setRuneElements).toHaveBeenCalled();
+        expect(container.children.length).toBeGreaterThan(0);
+    });
+
+    test("restoreAllRunes() handles missing container", () => {
+        mockDocument.getElementById.mockImplementation(() => null);
+        expect(() => persistence.restoreAllRunes(["Viking1"], {}, [])).not.toThrow();
+    });
+
+    test("restoreAllRunes() handles empty vikings list", () => {
+        const container = document.createElement('div');
+        container.id = 'runesCircleContainer';
+        mockDocument.getElementById.mockImplementation((id) => {
+            if (id === 'runesCircleContainer') return container;
+            return null;
+        });
+        
+        persistence.restoreAllRunes([], {}, []);
+        expect(container.innerHTML).toBe('');
+    });
+
+    test("restoreAllRunes() applies broken rune styling", () => {
+        const container = document.createElement('div');
+        container.id = 'runesCircleContainer';
+        container.classList.add = jest.fn();
+        container.classList.remove = jest.fn();
+        document.body.appendChild(container);
+        
+        mockDocument.getElementById.mockImplementation((id) => {
+            if (id === 'runesCircleContainer') return container;
+            return null;
+        });
+        
+        const allVikings = ["Viking1"];
+        const vikingToRune = { "Viking1": { id: 1, url: "rune1.png" } };
+        const brokenRunesList = [{ vikingName: "Viking1", runeId: 1 }];
+        
+        Object.defineProperty(window, 'innerHeight', { value: 1000, writable: true });
+        Object.defineProperty(window, 'innerWidth', { value: 1000, writable: true });
+        
+        persistence.restoreAllRunes(allVikings, vikingToRune, brokenRunesList);
+        
+        const runeElements = mockState.setRuneElements.mock.calls[0][0];
+        expect(runeElements[0].classList.contains('broken')).toBe(true);
+    });
+
+    test("restoreAllRunes() calculates scale for small window", () => {
+        const container = document.createElement('div');
+        container.id = 'runesCircleContainer';
+        container.classList.add = jest.fn();
+        container.classList.remove = jest.fn();
+        document.body.appendChild(container);
+        
+        mockDocument.getElementById.mockImplementation((id) => {
+            if (id === 'runesCircleContainer') return container;
+            return null;
+        });
+        
+        Object.defineProperty(window, 'innerHeight', { value: 800, writable: true });
+        Object.defineProperty(window, 'innerWidth', { value: 1000, writable: true });
+        
+        persistence.restoreAllRunes(["Viking1"], { "Viking1": { id: 1, url: "rune1.png" } }, []);
+        
+        expect(mockState.setRuneElements).toHaveBeenCalled();
+    });
+
+    test("restoreAllRunes() calculates scale for mobile", () => {
+        const container = document.createElement('div');
+        container.id = 'runesCircleContainer';
+        container.classList.add = jest.fn();
+        container.classList.remove = jest.fn();
+        document.body.appendChild(container);
+        
+        mockDocument.getElementById.mockImplementation((id) => {
+            if (id === 'runesCircleContainer') return container;
+            return null;
+        });
+        
+        Object.defineProperty(window, 'innerHeight', { value: 1000, writable: true });
+        Object.defineProperty(window, 'innerWidth', { value: 500, writable: true });
+        
+        persistence.restoreAllRunes(["Viking1"], { "Viking1": { id: 1, url: "rune1.png" } }, []);
+        
+        expect(mockState.setRuneElements).toHaveBeenCalled();
     });
 
 });
