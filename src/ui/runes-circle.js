@@ -120,6 +120,32 @@ export function breakChosenRune() {
     return chosen.dataset.vikingName;
 }
 
+export function breakMultipleRunes(count) {
+    const runeElements = state.getRuneElements();
+    const unbroken = runeElements.filter(el => !el.classList.contains('broken'));
+    
+    if (unbroken.length === 0) return [];
+    
+    const toBreak = Math.min(count, unbroken.length);
+    const shuffled = [...unbroken].sort(() => Math.random() - 0.5);
+    const broken = shuffled.slice(0, toBreak);
+    const eliminatedVikings = [];
+    
+    broken.forEach(rune => {
+        const runeId = parseInt(rune.dataset.runeId, 10);
+        if (isNaN(runeId)) return;
+        const brokenRune = brokenRunes.find(r => r.id === runeId);
+        if (!brokenRune) return;
+        rune.style.backgroundImage = `url(${brokenRune.url})`;
+        rune.classList.add('broken');
+        eliminatedVikings.push(rune.dataset.vikingName);
+    });
+    
+    persistence.save();
+    
+    return eliminatedVikings;
+}
+
 export function resetChosenRune() {
     const runeElements = state.getRuneElements();
     if (runeElements.length === 0) return;

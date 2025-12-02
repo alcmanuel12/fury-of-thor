@@ -28,7 +28,7 @@ body {
     top: 3vh;
     left: 2vw;
     border: none;
-    
+
     width: 75px;
     height: 75px;
     background-color: transparent;
@@ -272,6 +272,7 @@ body {
     width: 85%;
     margin-bottom: 20px;
     word-wrap: break-word;
+    text-shadow: -1px -1px 0 #522c10, 1px -1px 0 #522c10, 1px 1px 0 #522c10, -1px 1px 0 #522c10;
 }
 
 .alert-buttons {
@@ -384,6 +385,7 @@ button:hover,
     color: #ffe6b3;
     letter-spacing: 1px;
     font-family: 'BoldPixels', sans-serif;
+    text-shadow: -1px -1px 0 #522c10, 1px -1px 0 #522c10, 1px 1px 0 #522c10, -1px 1px 0 #522c10;
 }
 
 #player-selection-screen .board-body {
@@ -468,6 +470,7 @@ button:hover,
     font-size: 36px;
     font-family: 'BoldPixels', sans-serif;
     color: #f2e6d0;
+    text-shadow: -1px -1px 0 #522c10, 1px -1px 0 #522c10, 1px 1px 0 #522c10, -1px 1px 0 #522c10;
 }
 
 #player-selection-screen .viking-item img {
@@ -628,7 +631,6 @@ button:hover,
     opacity: 0.3;
 }
 
-
 .chosen-viking-name {
     position: absolute;
     top: 45%;
@@ -636,17 +638,34 @@ button:hover,
     transform: translateX(-50%);
     font-family: 'BoldPixels', sans-serif;
     font-size: 50px;
-    background: linear-gradient(90deg, #189DF8 0%, #38FBF9 100%);
-    color: #c5a746;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000, 2px 2px 0 #000;
+    color: #38FBF9;
     opacity: 0;
     transition: opacity 1.5s ease;
     z-index: 25;
 }
 
 .chosen-viking-name.visible {
+    opacity: 1;
+}
+
+.thor-rage-text {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'BoldPixels', sans-serif;
+    font-size: 100px;
+    color: #c5a746;
+    line-height: 1.3;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000, 2px 2px 0 #000;
+    z-index: 30;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.thor-rage-text:not(.hidden) {
     opacity: 1;
 }
 
@@ -814,7 +833,7 @@ button:hover,
 }
 
 #credit-screen {
-    background-image: url('https://res.cloudinary.com/djuisin8z/image/upload/v1763923517/desktop-background-ingame_4_mjxdvu.png');
+    background-image: url("https://res.cloudinary.com/djuisin8z/image/upload/v1763923517/desktop-background-ingame_4_mjxdvu.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -824,16 +843,14 @@ button:hover,
 
 .credit-content {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50vh;
-    max-width: 500px;
-    height: 36vh;
-    background: url('https://res.cloudinary.com/djuisin8z/image/upload/v1762417265/pizarra_uwoqkh.png') no-repeat center;
+    width: 80vw;
+    height: auto;
     background-size: 100% 100%;
     color: #f2e6d0;
-    font-family: 'BoldPixels', sans-serif;
+    font-family: "BoldPixels", sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -845,17 +862,33 @@ button:hover,
 }
 
 .credit-message {
-    font-size: 22px;
-    color: #f2e6d0;
+    font-size: 100px;
+    color: #c5a746;
     line-height: 1.3;
     width: 85%;
     margin-bottom: 30px;
     word-wrap: break-word;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000, 2px 2px 0 #000;
 }
 
-.credit-home-btn {
-    min-width: 120px;
-    height: 60px;
+.credit-subtitle {
+    font-size: 50px;
+}
+
+.credits-home-button {
+    position: absolute;
+    min-width: 75px;
+    height: 75px;
+    background-image: url("https://res.cloudinary.com/djuisin8z/image/upload/v1761747881/casa_ydmzkk.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: inherit;
+    top: 3vh;
+    left: 46%;
 }
 
 .credit-characters {
@@ -868,13 +901,46 @@ button:hover,
     pointer-events: none;
 }
 
+.name {
+    position: absolute;
+    font-size: 40px;
+    color: #c5a746;
+    font-family: "BoldPixels", sans-serif;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000, 2px 2px 0 #000;
+}
+
+.name.n1 {
+    left: 31.75%;
+    bottom: 16.5%;
+}
+
+.name.n2 {
+    left: 38.25%;
+    bottom: 21%;
+}
+
+.name.n3 {
+    left: 45.25%;
+    bottom: 25.5%;
+}
+
+.name.n4 {
+    left: 52.25%;
+    bottom: 21%;
+}
+
+.name.n5 {
+    left: 59.5%;
+    bottom: 17.5%;
+}
+
 .credit-characters img {
     position: absolute;
     width: 130px;
 }
 
 .credit-characters img:nth-child(1) {
-    left: 32%;
+    left: 31%;
     bottom: 2%;
 }
 
@@ -884,7 +950,7 @@ button:hover,
 }
 
 .credit-characters img:nth-child(3) {
-    left: 45%;
+    left: 44.5%;
     bottom: 11%;
 }
 
@@ -894,7 +960,7 @@ button:hover,
 }
 
 .credit-characters img:nth-child(5) {
-    left: 58%;
+    left: 60%;
     bottom: 2%;
 }
 
@@ -926,45 +992,45 @@ button:hover,
         width: 60px;
         height: 60px;
     }
-    
+
     .alert-popup {
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
     }
-    
+
     .alert-popup.hidden {
         opacity: 0;
         pointer-events: none;
     }
 
-    
+
     .alert-message {
         font-size: 20px;
         line-height: 1.2;
         margin: 0;
     }
-    
+
     .alert-buttons {
         margin: 0;
     }
-    
+
     .alert-btn:hover {
         transform: scale(1.1);
         filter: brightness(1.15);
         box-shadow: none;
     }
-    
+
     .alert-btn.hidden {
         display: none;
     }
-    
+
     .alert-popup.winner-alert .alert-message {
         font-size: 30px;
         margin-bottom: 10px;
     }
-    
+
     .alert-popup.winner-alert .alert-btn {
         min-width: 180px;
         height: 60px;
@@ -1011,6 +1077,67 @@ button:hover,
         left: 50%;
     }
 
+    .credit-character {
+        width: 110px;
+    }
+
+    .credit-character.c1 {
+        left: 25%;
+        bottom: 0%;
+    }
+
+    .credit-character.c2 {
+        left: 35%;
+        bottom: 3%;
+    }
+
+    .credit-character.c3 {
+        left: 47%;
+        bottom: 7%;
+    }
+
+    .credit-character.c4 {
+        left: 59%;
+        bottom: 3%;
+    }
+
+    .credit-character.c5 {
+        left: 70%;
+        bottom: 0%;
+    }
+
+    .name {
+        font-size: 30px;
+    }
+
+    .name.n1 {
+        left: 32.5%;
+        bottom: 20%;
+    }
+
+    .name.n2 {
+        left: 39%;
+        bottom: 24%;
+    }
+
+    .name.n3 {
+        left: 46.25%;
+        bottom: 28.5%;
+    }
+
+    .name.n4 {
+        left: 53%;
+        bottom: 23%;
+    }
+
+    .name.n5 {
+        left: 60.5%;
+        bottom: 20%;
+    }
+
+    .credits-home-button {
+        left: 46%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1226,6 +1353,12 @@ button:hover,
         transform: translate(-50%, -50%);
     }
 
+    .thor-rage-text {
+        top: 20%;
+        left: 18.25%;
+        font-size: 60px;
+    }
+
     .rune-item {
         width: 55px;
         height: 55px;
@@ -1249,7 +1382,7 @@ button:hover,
     }
 
     .bubble {
-        margin-top: 31vh;
+        margin-top: 32vh;
         font-size: 30px;
         line-height: 0.7em;
         position: absolute;
@@ -1295,27 +1428,32 @@ button:hover,
     }
 
     #credit-screen {
-        background-image: url('https://res.cloudinary.com/diycpogap/image/upload/v1763630989/credit-screen-background-mobile_lwiygw.jpg');
+        background-image: url("https://res.cloudinary.com/diycpogap/image/upload/v1763630989/credit-screen-background-mobile_lwiygw.jpg");
         background-attachment: fixed;
     }
 
+    .credits-home-button {
+        width: 50px;
+        height: 50px;
+        margin-top: 87vh;
+        left: 42%;
+    }
+
     .credit-content {
-        width: 80vw;
-        max-width: 400px;
-        height: auto;
-        min-height: 200px;
-        padding: 30px 20px;
+        top: 3vh;
+        transform: none;
+        left: 2vw;
+        padding: 0;
+        width: 100vw;
     }
 
     .credit-message {
-        font-size: 16px;
+        font-size: 50px;
         margin-bottom: 25px;
     }
 
-    .credit-home-btn {
-        min-width: 100px;
-        height: 50px;
-        font-size: 20px;
+    .credit-subtitle {
+        font-size: 40px;
     }
 
     .credit-characters img {
@@ -1323,27 +1461,62 @@ button:hover,
     }
 
     .credit-characters img:nth-child(1) {
-        left: 1%;
-        bottom: 0%;
+        left: 30%;
+        bottom: 46%;
+        transform: translateX(-50%);
     }
 
     .credit-characters img:nth-child(2) {
-        left: 18%;
-        bottom: 0%;
+        left: 70%;
+        bottom: 46%;
+        transform: translateX(-50%);
     }
 
     .credit-characters img:nth-child(3) {
-        left: 36%;
-        bottom: 0%;
+        left: 30%;
+        bottom: 28%;
+        transform: translateX(-50%);
     }
 
     .credit-characters img:nth-child(4) {
-        left: 57%;
-        bottom: 0%;
+        left: 70%;
+        bottom: 28%;
+        transform: translateX(-50%);
     }
 
     .credit-characters img:nth-child(5) {
-        left: 78%;
-        bottom: 0%;
+        left: 50%;
+        bottom: 14%;
+        transform: translateX(-50%);
+    }
+
+    .name.n1 {
+        left: 30%;
+        bottom: 57%;
+        transform: translateX(-50%);
+    }
+
+    .name.n2 {
+        left: 70%;
+        bottom: 57%;
+        transform: translateX(-50%);
+    }
+
+    .name.n3 {
+        left: 30%;
+        bottom: 39%;
+        transform: translateX(-50%);
+    }
+
+    .name.n4 {
+        left: 70%;
+        bottom: 39%;
+        transform: translateX(-50%);
+    }
+
+    .name.n5 {
+        left: 50%;
+        bottom: 24%;
+        transform: translateX(-50%);
     }
 }

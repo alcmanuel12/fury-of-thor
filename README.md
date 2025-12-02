@@ -110,16 +110,12 @@ Not just responsive:
 Each screen operates independently:
 
 ```
-/screens
-  homeScreen.js
-  playerSelectionScreen.js
-  ingameScreen.js
+src/
+├── core/
 
-/ui
-  runes.js
-  soundManager.js
-  vikingsList.js
-  state.js
+├── ui/
+│   ├── screens/
+└── main.js 
 ```
 
 This structure ensures maintainability, readability, and scalability.
@@ -160,14 +156,26 @@ Clean, minimal, optimized for touch interactions.
 # <div align="center">📁 Project Structure</div>
 
 ```
-/css
-/js
-  /screens
-  /ui
-/assets
-index.html
-README.md
+fury-of-thor/
+├── public/
+├── src/
+│   ├── assets/
+│   │   └── fonts/
+│   ├── core/
+│   ├── css/
+│   ├── ui/
+│   │   ├── screens/
 ```
+
+**Structure Overview:**
+
+- **`public/`** - Public assets and entry point HTML
+- **`src/core/`** - Core game logic (state management, persistence, runes, sound)
+- **`src/ui/`** - User interface components
+  - **`screens/`** - Individual screen modules (home, player selection, ingame, credits)
+  - UI utilities (alert popup, runes circle, typewriter, vikings list)
+- **`src/css/`** - Stylesheet
+- **`src/assets/`** - Static assets (fonts)
 
 Simple, clean, modular.
 
@@ -212,7 +220,7 @@ Each team member contributed to:
    <td align="center" width="260">
       <img src="https://res.cloudinary.com/djuisin8z/image/upload/v1763656697/asset_Oum_f0tn4x.png" width="130" style="border-radius: 50%; box-shadow: 0 0 10px #000;">
       <h3>Oumniya</h3>
-      <i>🪶 Product Owner</i><br>
+      <i>✒ Product Owner</i><br>
       <sub>Voice of the Gods • Keeper of Vision</sub>
     </td>
 

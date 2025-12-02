@@ -13,50 +13,76 @@ function saveState() {
 }
 
 export const state = {
-    getVikings: () => vikings,
-    setVikings: (newVikings) => { 
-        vikings = newVikings; 
-        saveState();
+    getVikings() {
+        return vikings;
     },
-    addViking: (name) => { 
-        vikings.push(name); 
-        saveState();
-    },
-    removeViking: (index) => { 
-        vikings.splice(index, 1); 
-        saveState();
-    },
-    popViking: () => { 
-        vikings.pop(); 
-        saveState();
-    },
-    clearVikings: () => { 
-        vikings = []; 
+
+    setVikings(newVikings) {
+        vikings = newVikings;
         saveState();
     },
 
-    getAvailableRunes: () => availableRunes,
-    resetAvailableRunes: () => { availableRunes = [...runes]; },
-    removeRune: (index) => { return availableRunes.splice(index, 1)[0]; },
-
-    getRuneElements: () => runeElements,
-    setRuneElements: (elements) => { 
-        runeElements = elements; 
-        saveState();
-    },
-    clearRuneElements: () => { 
-        runeElements = []; 
+    addViking(name) {
+        vikings.push(name);
         saveState();
     },
 
-    getVikingToRune: () => vikingToRune,
-    setVikingToRune: (mapping) => { 
-        vikingToRune = mapping; 
+    removeViking(index) {
+        vikings.splice(index, 1);
         saveState();
     },
-    getVikingRune: (vikingName) => { return vikingToRune[vikingName]; },
-    clearVikingToRune: () => { 
-        vikingToRune = {}; 
+
+    popViking() {
+        vikings.pop();
+        saveState();
+    },
+
+    clearVikings() {
+        vikings = [];
+        saveState();
+    },
+
+    getAvailableRunes() {
+        return availableRunes;
+    },
+
+    resetAvailableRunes() {
+        availableRunes = [...runes];
+    },
+
+    removeRune(index) {
+        return availableRunes.splice(index, 1)[0];
+    },
+
+    getRuneElements() {
+        return runeElements;
+    },
+
+    setRuneElements(elements) {
+        runeElements = elements;
+        saveState();
+    },
+
+    clearRuneElements() {
+        runeElements = [];
+        saveState();
+    },
+
+    getVikingToRune() {
+        return vikingToRune;
+    },
+
+    setVikingToRune(mapping) {
+        vikingToRune = mapping;
+        saveState();
+    },
+
+    getVikingRune(vikingName) {
+        return vikingToRune[vikingName];
+    },
+
+    clearVikingToRune() {
+        vikingToRune = {};
         saveState();
     }
 };

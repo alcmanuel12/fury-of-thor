@@ -9,8 +9,9 @@ import { state } from './core/state.js';
 
 function registerSounds() {
     soundManager.registerSound('forest', 'https://res.cloudinary.com/din119ww9/video/upload/v1763026026/sonido-bosque_h3l0u8.mp3', true);
-    soundManager.registerSound('ingame', 'https://res.cloudinary.com/diycpogap/video/upload/v1763506178/background-ingame-music_xr61ns.mp3', true, 'background', 0.5);
+    soundManager.registerSound('ingame', 'https://res.cloudinary.com/diycpogap/video/upload/v1763506178/background-ingame-music_xr61ns.mp3', true, 'background', 0.7);
     soundManager.registerSound('lightning-effect', 'https://res.cloudinary.com/diycpogap/video/upload/v1763506598/lightning-shout-effect_r2nqpj.mp3', false, 'effect', 0.7);
+    soundManager.registerSound('game-end', 'https://res.cloudinary.com/diycpogap/video/upload/v1764627462/untitled_e4mos6.mp3', false, 'effect', 0.3);
 }
 
 async function init() {
@@ -147,6 +148,7 @@ async function restoreState(savedState) {
         }
     } else if (screenToRestore === 'credit-screen') {
         persistence.restoreScreen('credit-screen');
+        soundManager.play('forest');
         persistence.setIsRestoring(false);
     } else {
         persistence.restoreScreen('home-screen');

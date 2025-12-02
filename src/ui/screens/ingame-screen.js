@@ -1,17 +1,19 @@
 import { state } from '../../core/state.js';
 import { soundManager } from '../../core/sound-manager.js';
 import { renderVikingsList } from '../vikings-list.js';
-import { selectRandomViking, breakChosenRune, resetChosenRune } from '../runes-circle.js';
+import { selectRandomViking, breakChosenRune, resetChosenRune, breakMultipleRunes } from '../runes-circle.js';
 import { alertPopup } from '../alert-popup.js';
 import { persistence } from '../../core/persistence.js';
 import { Typewriter } from '../typewriter.js';
 
 let isAnimationInProgress = false;
 let gameEnded = false;
+let thorRageUsed = false;
 
 export function resetGameState() {
     gameEnded = false;
     isAnimationInProgress = false;
+    thorRageUsed = false;
     persistence.setGameEnded(false);
     persistence.setWinnerName(null);
 
@@ -25,6 +27,11 @@ export function resetGameState() {
     if (sacrificeActionButton) {
         sacrificeActionButton.disabled = false;
         sacrificeActionButton.style.pointerEvents = 'auto';
+    }
+
+    const thorRageText = document.getElementById('thor-rage-text');
+    if (thorRageText) {
+        thorRageText.classList.add('hidden');
     }
 
     resetChosenRune();
@@ -79,6 +86,8 @@ export async function restoreWinner(winnerName) {
             ingameScreen.style.display = 'none';
             creditScreen.style.display = 'flex';
             soundManager.stop('ingame');
+            soundManager.stop('game-end');
+            soundManager.play('forest');
             persistence.save();
         }
     }
@@ -170,11 +179,41 @@ export function initIngameScreen() {
             sacrificeActionButton.style.pointerEvents = 'none';
         }
 
+        const runeElements = state.getRuneElements();
+        const unbrokenRunes = runeElements.filter(el => !el.classList.contains('broken'));
+        const shouldThorRage = !thorRageUsed && unbrokenRunes.length > 4 && Math.random() < 0.15;
+        
+        let runesToBreak = 1;
+        if (shouldThorRage) {
+            thorRageUsed = true;
+            const percentage = 0.3 + Math.random() * 0.2;
+            runesToBreak = Math.max(2, Math.floor(unbrokenRunes.length * percentage));
+            
+            const thorRageText = document.getElementById('thor-rage-text');
+            if (thorRageText) {
+                thorRageText.classList.remove('hidden');
+            }
+        }
+
         selectRandomViking();
 
-        if (thorCharacter) {
-            thorCharacter.classList.add('thor-character-mad');
+        const animationDelay = shouldThorRage ? 2000 : 0;
+        const thorRageBreakDelay = shouldThorRage ? 300 : 0;
+
+        if (shouldThorRage) {
+            setTimeout(() => {
+                const thorRageText = document.getElementById('thor-rage-text');
+                if (thorRageText) {
+                    thorRageText.classList.add('hidden');
+                }
+            }, animationDelay + 300);
         }
+
+        setTimeout(() => {
+            if (thorCharacter) {
+                thorCharacter.classList.add('thor-character-mad');
+            }
+        }, 500 + animationDelay);
 
         setTimeout(() => {
             soundManager.play('lightning-effect');
@@ -194,17 +233,28 @@ export function initIngameScreen() {
                     }
                 }, 1900);
             }
-        }, 750);
+        }, 750 + animationDelay);
 
         setTimeout(() => {
-            const eliminatedViking = breakChosenRune();
-            if (eliminatedViking) {
-                const vikings = state.getVikings();
-                const index = vikings.indexOf(eliminatedViking);
-                if (index !== -1) {
-                    state.removeViking(index);
+            let eliminatedVikings = [];
+            if (shouldThorRage && runesToBreak > 1) {
+                eliminatedVikings = breakMultipleRunes(runesToBreak);
+            } else {
+                const eliminatedViking = breakChosenRune();
+                if (eliminatedViking) {
+                    eliminatedVikings = [eliminatedViking];
                 }
             }
+
+            eliminatedVikings.forEach(eliminatedViking => {
+                if (eliminatedViking) {
+                    const vikings = state.getVikings();
+                    const index = vikings.indexOf(eliminatedViking);
+                    if (index !== -1) {
+                        state.removeViking(index);
+                    }
+                }
+            });
 
             setTimeout(() => {
                 if (thorCharacter) {
@@ -223,6 +273,13 @@ export function initIngameScreen() {
                     persistence.save();
                     typewriter.stop();
 
+                    soundManager.fadeOut('ingame', 1000, () => {
+                        soundManager.stop('ingame');
+                        setTimeout(() => {
+                            soundManager.play('game-end');
+                        }, 300);
+                    });
+
                     setTimeout(() => {
                         selectWinner(winnerName);
                     }, 500);
@@ -234,7 +291,7 @@ export function initIngameScreen() {
                     }
                 }
             }, 3500);
-        }, 2250);
+        }, 2250 + animationDelay + thorRageBreakDelay);
     }
 
     function selectWinner(winnerName) {

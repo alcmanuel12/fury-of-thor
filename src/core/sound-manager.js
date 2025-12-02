@@ -30,7 +30,7 @@ class SoundManager {
       }
 
       if (!this.isMuted) {
-        this.sounds[name].play().catch(function (err) {
+        this.sounds[name].play().catch((err) => {
           console.log('Could not play sound ' + name + ':', err);
         });
       }
@@ -64,6 +64,36 @@ class SoundManager {
         this.saveState();
       }
     }
+  }
+
+  fadeOut(name, duration = 1000, onComplete = null) {
+    if (!this.sounds[name]) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    const audio = this.sounds[name];
+    const startVolume = audio.volume;
+    const startTime = Date.now();
+    const fadeInterval = 25;
+
+    const fade = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const newVolume = startVolume * (1 - progress);
+      audio.volume = Math.max(0, newVolume);
+
+      if (progress < 1) {
+        setTimeout(fade, fadeInterval);
+      } else {
+        audio.pause();
+        audio.volume = startVolume;
+        if (onComplete) onComplete();
+      }
+    };
+
+    fade();
   }
 
   setMuted(muted) {
