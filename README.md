@@ -210,6 +210,10 @@ cd fury-of-thor
 
 Open with **Live Server**, or double click `index.html`.
 
+Or run it instantly on Vercel:
+
+👉 [Vercel](https://fury-rouge.vercel.app/)
+
 ---
 
 # <div align="center">👥 Team Credits</div>
