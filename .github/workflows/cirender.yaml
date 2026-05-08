@@ -1,0 +1,19 @@
+name: Run tests and deploy
+on:
+  push:
+    branches: [ test ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar codigo
+        uses: actions/checkout@v4
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Instalar dependencias
+        run: npm install
+      - name: Ejecutar tests
+        run: npm test
